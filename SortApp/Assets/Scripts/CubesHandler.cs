@@ -8,6 +8,7 @@ public class CubesHandler : MonoBehaviour
     public static event SwapAction OnSwap;
 
     [SerializeField]
+    [Range(5,20)]
     private int numOfCubes = 10;
     [SerializeField]
     private GameObject prefab;
@@ -113,6 +114,14 @@ public class CubesHandler : MonoBehaviour
     void OnDisable()
     {
         UFO.OnSwapIsOver -= SortIsRunning;
+    }
+
+    public void Shuffle()
+    {
+        foreach (var cube in cubes)
+        {
+            cube.GetComponent<Renderer>().material.color = GetRandomGrayscaleColor();
+        }
     }
 
 
