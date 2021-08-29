@@ -15,6 +15,8 @@ public class CubesHandler : MonoBehaviour
     bool sortIsRunning;
 
     private List<GameObject> cubes = new List<GameObject>();
+    private List<Color> initialColors = new List<Color>();
+
     private int listCount;
 
     void OnEnable()
@@ -27,21 +29,32 @@ public class CubesHandler : MonoBehaviour
         sortIsRunning = true;
     }
 
+    void SpawnCube(int index)
+    {
+            Color colour = new Color(0f,0f,0f,1f);
+
+            Vector3 pos = Vector3.zero;
+            pos = this.transform.position + new Vector3 (1.5f * (index - numOfCubes / 2), 0.0f, 0.0f);
+            GameObject nextCube = Instantiate(prefab, pos, Quaternion.identity);
+            colour = GetRandomGrayscaleColor();
+            nextCube.GetComponent<Renderer>().material.color = colour;
+            nextCube.gameObject.layer = 3;
+            cubes.Add(nextCube);
+            initialColors.Add(colour);
+    }
     void SpawnCubes(int n)
     {
-        Vector3 pos = Vector3.zero;
+        
 
         for (int i = 0; i < n; i++)
         {
-            pos = this.transform.position + new Vector3 (1.5f * (i - numOfCubes / 2), 0.0f, 0.0f);
-            GameObject nextCube = Instantiate(prefab, pos, Quaternion.identity);
-            nextCube.GetComponent<Renderer>().material.color = GetRandomGrayscaleColor();
-            nextCube.gameObject.layer = 3;
-            cubes.Add(nextCube);
+            SpawnCube(i);
         }
-
         listCount = cubes.Count;
+        
     }
+
+
 
     Color GetRandomGrayscaleColor()
     {
@@ -150,9 +163,6 @@ public class CubesHandler : MonoBehaviour
         }
     }
 
-
-
-
     IEnumerator StartSwap(int a, int b)
     {
         while(!sortIsRunning)
@@ -181,6 +191,14 @@ public class CubesHandler : MonoBehaviour
         foreach (var cube in cubes)
         {
             cube.GetComponent<Renderer>().material.color = GetRandomGrayscaleColor();
+        }
+    }
+
+    public void Revert()
+    {
+        for(int i=0; i < listCount; i++)
+        {
+            cubes[i].GetComponent<Renderer>().material.color = initialColors[i];
         }
     }
 
