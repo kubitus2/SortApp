@@ -15,6 +15,7 @@ public class CubesHandler : MonoBehaviour
     bool sortIsRunning;
 
     private List<GameObject> cubes = new List<GameObject>();
+    private int listCount;
 
     void OnEnable()
     {
@@ -38,6 +39,8 @@ public class CubesHandler : MonoBehaviour
             nextCube.gameObject.layer = 3;
             cubes.Add(nextCube);
         }
+
+        listCount = cubes.Count;
     }
 
     Color GetRandomGrayscaleColor()
@@ -57,10 +60,10 @@ public class CubesHandler : MonoBehaviour
 
     public void Sort()
     {
-        StartCoroutine(BubbleSort());
+        StartCoroutine(CocktailSort());
     }
 
-    //SwapING ALGORITHMS
+    //SORTING ALGORITHMS
 
     void Swap(int a, int b)
     {
@@ -77,9 +80,9 @@ public class CubesHandler : MonoBehaviour
     
     IEnumerator BubbleSort()
     {
-        for (int j = 0; j <= cubes.Count - 2; j++)
+        for (int j = 0; j <= listCount - 2; j++)
         {
-            for (int i = 0; i <= cubes.Count - 2; i++)
+            for (int i = 0; i <= listCount - 2; i++)
             {
                 if(IsBrighter(cubes[i], cubes[i+1]))
                 {
@@ -91,6 +94,63 @@ public class CubesHandler : MonoBehaviour
         }
         yield return null;
     }
+
+    IEnumerator InsertionSort()
+    {
+        for(int i = 1; i < listCount; i++)
+        {
+            int j = i;
+
+            while(j > 0 && IsBrighter(cubes[j-1], cubes[j]))
+            {
+                Swap(j, j-1);
+                yield return StartSwap(j, j - 1);
+
+                j--;
+            }
+        }
+    }
+
+    IEnumerator CocktailSort()
+    {
+        bool swapped = true;
+        int start = 0;
+        int end = listCount;
+
+        while(swapped)
+        {
+            swapped = false;
+
+            for(int i = start; i < end - 1; ++i)
+            {
+                if(IsBrighter(cubes[i], cubes[i+1]))
+                {
+                    Swap(i, i+1);
+                    yield return StartSwap(i, i+1);
+                    swapped = true;
+                }
+            }
+
+            if(swapped == false)
+                break;
+
+            end--;
+
+            for (int i = end - 1; i >= start; i--)
+            {
+                if(IsBrighter(cubes[i], cubes[i+1]))
+                {
+                    Swap(i, i+1);
+                    yield return StartSwap(i, i+1);
+                    swapped = true;
+                }
+            }
+
+            start++;
+        }
+    }
+
+
 
 
     IEnumerator StartSwap(int a, int b)
