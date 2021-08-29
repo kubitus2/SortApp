@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CubesHandler : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class CubesHandler : MonoBehaviour
     private List<Color> initialColors = new List<Color>();
 
     private int listCount;
+
+    [SerializeField]
+    private Dropdown dropdown;
 
     void OnEnable()
     {
@@ -73,7 +77,18 @@ public class CubesHandler : MonoBehaviour
 
     public void Sort()
     {
-        StartCoroutine(CocktailSort());
+        switch(dropdown.value)
+        {
+            case 0:
+                StartCoroutine(BubbleSort());
+                break;
+            case 1:
+                StartCoroutine(CocktailSort());
+                break;
+            case 2:
+                StartCoroutine(InsertionSort());
+                break;
+        }
     }
 
     //SORTING ALGORITHMS
