@@ -11,17 +11,18 @@ public class CubesHandler : MonoBehaviour
     private int numOfCubes = 10;
     [SerializeField]
     private GameObject prefab;
-
-    private bool isSortPlaying;
-
+    bool sortIsRunning;
 
     private List<GameObject> cubes = new List<GameObject>();
 
-
+    void OnEnable()
+    {
+        UFO.OnSwapIsOver += SortIsRunning;
+    }
     void Start()
     {
         SpawnCubes(numOfCubes);
-        isSortPlaying = false;
+        sortIsRunning = true;
     }
 
     void SpawnCubes(int n)
@@ -89,10 +90,31 @@ public class CubesHandler : MonoBehaviour
 
     public void Test()
     {
-        OnSwap(cubes[2], cubes[3]);
-        OnSwap(cubes[5], cubes[4]);
-        Debug.Log("Test");
+        StartCoroutine(StartSwap(3,4));
+        StartCoroutine(StartSwap(5,2));
 
+    }
+
+    IEnumerator StartSwap(int a, int b)
+    {
+        while(!sortIsRunning)
+        {
+            yield return null;
+        }
+        sortIsRunning = false;
+        OnSwap(cubes[a], cubes[b]);
+        yield return null;
+    }
+
+    void SortIsRunning()
+    {
+        Debug.Log("Sort is over");
+        sortIsRunning = true;
+    }
+
+    void OnDisable()
+    {
+        UFO.OnSwapIsOver -= SortIsRunning;
     }
 
 

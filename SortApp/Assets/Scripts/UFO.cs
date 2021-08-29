@@ -10,6 +10,9 @@ public class UFO : MonoBehaviour
     [SerializeField]
     private float speed = 1f;
 
+    public delegate void SwapIsOver();
+    public static event SwapIsOver OnSwapIsOver;
+
 
 
     enum FloatMode
@@ -29,6 +32,7 @@ public class UFO : MonoBehaviour
     
     IEnumerator SwapAnimation(GameObject a, GameObject b)
     {
+        
         Vector3 aPosition = a.transform.position;
         Vector3 bPosition = b.transform.position;
 
@@ -49,6 +53,9 @@ public class UFO : MonoBehaviour
         yield return Lift();
         yield return MoveAbove(bPosition, FloatMode.Directly);
         yield return Drop();
+
+        OnSwapIsOver();
+        yield return null;
     }
 
     IEnumerator MoveAbove(Vector3 targetPlace, FloatMode mode)
@@ -141,5 +148,7 @@ public class UFO : MonoBehaviour
     {
         CubesHandler.OnSwap -= EventTest;
     }
+
+
 
 }
