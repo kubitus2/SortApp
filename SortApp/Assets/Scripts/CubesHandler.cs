@@ -19,20 +19,19 @@ public class CubesHandler : MonoBehaviour
     [SerializeField]
     private Dropdown dropdown;
 
-    bool sortIsNotRunning;
+    bool swapIsNotRunning;
     private List<GameObject> cubes = new List<GameObject>();
-    private List<Color> initialColors = new List<Color>();
     private int listCount;
 
     void OnEnable()
     {
-        UFO.OnSwapIsOver += SortIsRunning;
+        UFO.OnSwapIsOver += SwapIsNotRunning;
     }
 
     void Awake()
     {
         SpawnCubes(numOfCubes);
-        sortIsNotRunning = true;
+        swapIsNotRunning = true;
     }
 
     Vector3 CubePositionOffset(int index)
@@ -53,7 +52,6 @@ public class CubesHandler : MonoBehaviour
         nextCube.gameObject.layer = 3;
 
         cubes.Add(nextCube);
-        initialColors.Add(colour);
     }
 
     void SpawnCubes(int n)
@@ -122,7 +120,6 @@ public class CubesHandler : MonoBehaviour
             {
                 if(IsBrighter(cubes[i], cubes[i+1]))
                 {
-                    
                     yield return StartSwap(i, i+1);
                     Swap(i, i+1);
                 }
@@ -201,19 +198,19 @@ public class CubesHandler : MonoBehaviour
 
     IEnumerator StartSwap(int a, int b)
     {
-        while(!sortIsNotRunning)
+        while(!swapIsNotRunning)
         {
             yield return null;
         }
-        sortIsNotRunning = false;
+        swapIsNotRunning = false;
 
         OnSwap(cubes[a], cubes[b]);
         yield return null;
     }
 
-    void SortIsRunning()
+    void SwapIsNotRunning()
     {
-        sortIsNotRunning = true;
+        swapIsNotRunning = true;
     }
 
     public void Shuffle()
@@ -226,6 +223,6 @@ public class CubesHandler : MonoBehaviour
 
     void OnDisable()
     {
-        UFO.OnSwapIsOver -= SortIsRunning;
+        UFO.OnSwapIsOver -= SwapIsNotRunning;
     }
 }
