@@ -17,6 +17,8 @@ public class GUI : MonoBehaviour
     private Text timer;
     [SerializeField]
     private Text stepCounter;
+    [SerializeField]
+    private float animDuration = 0.1f;
 
     private int numOfSteps;
     private float timeElapsed;
@@ -25,7 +27,6 @@ public class GUI : MonoBehaviour
     private bool isUIActive;
 
     private AudioSource[] audios;
-
 
     void OnEnable()
     {
@@ -56,7 +57,7 @@ public class GUI : MonoBehaviour
     public void QuitPrompt()
     {
         Time.timeScale = 0;
-        modalPanel.transform.DOScaleX(0.3f, 0.1f).SetUpdate(true);
+        modalPanel.transform.DOScaleX(0.3f, animDuration).SetUpdate(true);
 
         foreach(AudioSource audio in audios)
         {
@@ -67,7 +68,7 @@ public class GUI : MonoBehaviour
     public void CloseQuitPrompt()
     {
         Time.timeScale = 1;
-        modalPanel.transform.DOScaleX(0f, 0.2f).SetUpdate(true);  
+        modalPanel.transform.DOScaleX(0f, animDuration).SetUpdate(true);  
 
         foreach(AudioSource audio in audios)
         {

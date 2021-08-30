@@ -5,14 +5,12 @@ using UnityEngine.UI;
 
 public class CubesHandler : MonoBehaviour
 {
-    //delegates and events
     public delegate void SwapAction(GameObject a, GameObject b);
     public static event SwapAction OnSwap;
 
     public delegate void SortToggle();
     public static event SortToggle OnSortToggle;
 
-    //serializeable fields
     [SerializeField]
     [Range(5,20)]
     private int numOfCubes = 12;
@@ -21,8 +19,7 @@ public class CubesHandler : MonoBehaviour
     [SerializeField]
     private Dropdown dropdown;
 
-    //other fields
-    bool sortIsRunning;
+    bool sortIsNotRunning;
     private List<GameObject> cubes = new List<GameObject>();
     private List<Color> initialColors = new List<Color>();
     private int listCount;
@@ -35,21 +32,28 @@ public class CubesHandler : MonoBehaviour
     void Awake()
     {
         SpawnCubes(numOfCubes);
-        sortIsRunning = true;
+        sortIsNotRunning = true;
+    }
+
+    Vector3 CubePositionOffset(int index)
+    {
+        return new Vector3 (1.5f * (index - numOfCubes / 2), 0f, 0f);
     }
 
     void SpawnCube(int index)
     {
-            Color colour = new Color(0f,0f,0f,1f);
+        Color colour = new Color(0f,0f,0f,1f);
 
-            Vector3 pos = Vector3.zero;
-            pos = this.transform.position + new Vector3 (1.5f * (index - numOfCubes / 2), 0.0f, 0.0f);
-            GameObject nextCube = Instantiate(prefab, pos, Quaternion.identity);
-            colour = GetRandomGrayscaleColor();
-            nextCube.GetComponent<Renderer>().material.color = colour;
-            nextCube.gameObject.layer = 3;
-            cubes.Add(nextCube);
-            initialColors.Add(colour);
+        Vector3 pos = Vector3.zero;
+        pos = this.transform.position + CubePositionOffset(index);
+        GameObject nextCube = Instantiate(prefab, pos, Quaternion.identity);
+
+        colour = GetRandomGrayscaleColor();
+        nextCube.GetComponent<Renderer>().material.color = colour;
+        nextCube.gameObject.layer = 3;
+
+        cubes.Add(nextCube);
+        initialColors.Add(colour);
     }
 
     void SpawnCubes(int n)
@@ -58,6 +62,7 @@ public class CubesHandler : MonoBehaviour
         {
             SpawnCube(i);
         }
+
         listCount = cubes.Count;    
     }
 
@@ -117,8 +122,9 @@ public class CubesHandler : MonoBehaviour
             {
                 if(IsBrighter(cubes[i], cubes[i+1]))
                 {
-                    Swap(i, i+1);
+                    
                     yield return StartSwap(i, i+1);
+                    Swap(i, i+1);
                 }
             }
         }
@@ -137,15 +143,16 @@ public class CubesHandler : MonoBehaviour
         yield return new WaitForSeconds(1);
         OnSortToggle();
     }
-    
+
     IEnumerator GnomeSort(int upperBound)
     {
         int pos = upperBound;
 
         while (pos > 0 && IsBrighter(cubes[pos - 1], cubes[pos]))
         {
-            Swap(pos, pos - 1);
+            
             yield return StartSwap(pos, pos - 1);
+            Swap(pos, pos - 1);
             pos--;
         }
     }
@@ -166,8 +173,9 @@ public class CubesHandler : MonoBehaviour
             {
                 if(IsBrighter(cubes[i], cubes[i+1]))
                 {
-                    Swap(i, i+1);
+                    
                     yield return StartSwap(i, i+1);
+                    Swap(i, i+1);
                     swapped = true;
                 }
             }
@@ -181,8 +189,8 @@ public class CubesHandler : MonoBehaviour
             {
                 if(IsBrighter(cubes[i], cubes[i+1]))
                 {
-                    Swap(i, i+1);
                     yield return StartSwap(i, i+1);
+                    Swap(i, i+1);
                     swapped = true;
                 }
             }
@@ -193,11 +201,11 @@ public class CubesHandler : MonoBehaviour
 
     IEnumerator StartSwap(int a, int b)
     {
-        while(!sortIsRunning)
+        while(!sortIsNotRunning)
         {
             yield return null;
         }
-        sortIsRunning = false;
+        sortIsNotRunning = false;
 
         OnSwap(cubes[a], cubes[b]);
         yield return null;
@@ -205,7 +213,7 @@ public class CubesHandler : MonoBehaviour
 
     void SortIsRunning()
     {
-        sortIsRunning = true;
+        sortIsNotRunning = true;
     }
 
     public void Shuffle()

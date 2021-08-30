@@ -24,6 +24,7 @@ public class UFO : MonoBehaviour
         Infront,
         Behind
     };
+
     void OnEnable()
     {
         CubesHandler.OnSwap += Swap;
@@ -35,24 +36,31 @@ public class UFO : MonoBehaviour
         Vector3 aPosition = a.transform.position;
         Vector3 bPosition = b.transform.position;
 
+        //move above and lift first cube
         yield return MoveAbove (aPosition, FloatMode.Directly);
-
         yield return Lift();
+
+        //drop it infront of the second cube
         yield return MoveAbove (bPosition, FloatMode.Infront);
         yield return Drop();
 
-
+        //lift the second cube
         yield return MoveAbove(bPosition, FloatMode.Directly);
         yield return Lift();
+
+        //drop it in the first cube's initial position
         yield return MoveAbove (aPosition, FloatMode.Directly);
         yield return Drop();
 
-        yield return MoveAbove(bPosition, FloatMode.Infront
-        );
+        //lift the first cube
+        yield return MoveAbove(bPosition, FloatMode.Infront);
         yield return Lift();
+
+        //drop in at the freed position of the second cube
         yield return MoveAbove(bPosition, FloatMode.Directly);
         yield return Drop();
 
+        //fire the event communicating the end of the swap sequence
         OnSwapIsOver();
         yield return null;
     }
@@ -75,8 +83,6 @@ public class UFO : MonoBehaviour
         }
         Vector3 target = targetPlace + offset;
         yield return MoveObject(this.transform, target);
-
-        yield return null;
     }
 
     IEnumerator MoveObject(Transform obj, Vector3 target)
@@ -86,17 +92,18 @@ public class UFO : MonoBehaviour
         {
             yield return null;
         }
-        yield return null;
     }
     
     IEnumerator Lift()
     {
-        tractorBeam.SetActive(true);
+        GameObject cargo;
         Vector3 cargoPos = new Vector3 (transform.position.x, transform.position.y - 1.0f, transform.position.z);
+
+        tractorBeam.SetActive(true);
+        
         RaycastHit hit;
         Ray ray = new Ray(transform.position, Vector3.down);
-        GameObject cargo;
-
+        
         if (Physics.Raycast(ray, out hit))
         {
             if (hit.collider != null)
