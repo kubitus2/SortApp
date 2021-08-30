@@ -85,14 +85,16 @@ public class CubesHandler : MonoBehaviour
             case 0:
                 StartCoroutine(BubbleSort());
                 break;
+
             case 1:
                 StartCoroutine(CocktailSort());
                 break;
             case 2:
-                StartCoroutine(InsertionSort());
+                StartCoroutine(GnomeSort());
                 break;
         }
     }
+
 
     //SORTING ALGORITHMS
 
@@ -129,6 +131,29 @@ public class CubesHandler : MonoBehaviour
         yield return null;
     }
 
+    IEnumerator GnomeSort()
+    {
+        OnSortToggle();
+
+        int pos = 0;
+
+        while (pos < listCount)
+        {
+            if(pos == 0 || IsBrighter(cubes[pos], cubes[pos -1]))
+            {
+                pos++;
+            }
+            else
+            {
+                Swap(pos, pos - 1);
+                yield return StartSwap(pos, pos - 1);
+                pos--;
+            }
+        }
+
+
+        OnSortToggle();
+    }
     IEnumerator InsertionSort()
     {
         OnSortToggle();
