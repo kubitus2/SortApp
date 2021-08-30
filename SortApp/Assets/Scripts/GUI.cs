@@ -9,24 +9,19 @@ public class GUI : MonoBehaviour
 
     [SerializeField]
     Canvas canvas;
-
     [SerializeField]
     private List<Button> buttonlist = new List<Button>();
-
     [SerializeField]
     private GameObject modalPanel;
-
     [SerializeField]
     private Text timer;
-
     [SerializeField]
     private Text stepCounter;
 
-    int numOfSteps;
-    float timeElapsed;
-    bool isTimerRunning;
+    private int numOfSteps;
+    private float timeElapsed;
 
-
+    private bool isTimerRunning;
     private bool UIActive;
 
 
@@ -56,14 +51,14 @@ public class GUI : MonoBehaviour
 
     public void QuitPrompt()
     {
-        modalPanel.SetActive(true);
-        modalPanel.transform.DOScaleX(0.3f, 0.1f);
+        Time.timeScale = 0;
+        modalPanel.transform.DOScaleX(0.3f, 0.1f).SetUpdate(true);
     }
 
-    public void ClosePrompt()
+    public void CloseQuitPrompt()
     {
-        modalPanel.transform.DOScaleX(0f, 0.2f);
-        modalPanel.SetActive(false);
+        Time.timeScale = 1;
+        modalPanel.transform.DOScaleX(0f, 0.2f).SetUpdate(true);  
     } 
 
     public void Quit()
@@ -100,7 +95,7 @@ public class GUI : MonoBehaviour
 
     void DisplaySteps(int steps)
     {
-        stepCounter.text = string.Format("Steps done: {0}", steps);
+        stepCounter.text = string.Format("Swaps done: {0}", steps);
     }
 
     void CountSteps()
