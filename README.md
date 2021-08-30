@@ -1,6 +1,5 @@
 # Fifty Shades of Cubes :smiley:
 ![UI Screen](ufo_screen.png)
-Format: ![Alt Text](url)
 
 This simple 'game' shows visualisation of three sorting algorithms. A flying saucer hovering over the surface of Mars has one simple task: sort cubes by their shades, from the darkest to the brightest. The algorithms in questions are:
   * Bubble Sort
@@ -97,4 +96,4 @@ I have used the following free assets:
   * [Flying saucer model](https://www.cgtrader.com/free-3d-models/space/spaceship/free-flying-saucer) by jonlundy3d
   * [Sand texture](https://3dtextures.me/2017/03/23/sand-002/)
 
-I have also used fantastic [DOTween library] (http://dotween.demigiant.com/) for my animations.
+I have also used fantastic [DOTween library](http://dotween.demigiant.com/) for my animations.
