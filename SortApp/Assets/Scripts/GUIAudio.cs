@@ -11,7 +11,6 @@ public class GUIAudio : MonoBehaviour
     private Button button {get {return GetComponent<Button>();}}
     private AudioSource source {get {return GetComponent<AudioSource>();}}
 
-
     void Awake()
     {
         gameObject.AddComponent<AudioSource>();
@@ -20,7 +19,6 @@ public class GUIAudio : MonoBehaviour
 
         button.onClick.AddListener(() => PlaySound());
     }
-
 
     void PlaySound()
     {

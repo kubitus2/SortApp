@@ -22,7 +22,7 @@ public class GUI : MonoBehaviour
     private float timeElapsed;
 
     private bool isTimerRunning;
-    private bool UIActive;
+    private bool isUIActive;
 
     private AudioSource[] audios;
 
@@ -35,7 +35,7 @@ public class GUI : MonoBehaviour
 
     void Awake()
     {
-        UIActive = true;
+        isUIActive = true;
         numOfSteps = 0;
         timeElapsed = 0f;
         isTimerRunning = false;
@@ -45,11 +45,11 @@ public class GUI : MonoBehaviour
 
     void StateToggle()
     {
-        UIActive = !UIActive;
+        isUIActive = !isUIActive;
 
         foreach(var btn in buttonlist)
         {
-            btn.interactable = UIActive;
+            btn.interactable = isUIActive;
         }
     }
 
@@ -82,7 +82,7 @@ public class GUI : MonoBehaviour
 
     void Update()
     {
-        isTimerRunning = !UIActive;
+        isTimerRunning = !isUIActive;
 
         if(isTimerRunning)
         {

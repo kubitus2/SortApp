@@ -5,32 +5,34 @@ using UnityEngine.UI;
 
 public class CubesHandler : MonoBehaviour
 {
+    //delegates and events
     public delegate void SwapAction(GameObject a, GameObject b);
     public static event SwapAction OnSwap;
 
     public delegate void SortToggle();
     public static event SortToggle OnSortToggle;
 
+    //serializeable fields
     [SerializeField]
     [Range(5,20)]
-    private int numOfCubes = 10;
+    private int numOfCubes = 12;
     [SerializeField]
     private GameObject prefab;
-    bool sortIsRunning;
-
-    private List<GameObject> cubes = new List<GameObject>();
-    private List<Color> initialColors = new List<Color>();
-
-    private int listCount;
-
     [SerializeField]
     private Dropdown dropdown;
+
+    //other fields
+    bool sortIsRunning;
+    private List<GameObject> cubes = new List<GameObject>();
+    private List<Color> initialColors = new List<Color>();
+    private int listCount;
 
     void OnEnable()
     {
         UFO.OnSwapIsOver += SortIsRunning;
     }
-    void Start()
+
+    void Awake()
     {
         SpawnCubes(numOfCubes);
         sortIsRunning = true;
@@ -49,19 +51,15 @@ public class CubesHandler : MonoBehaviour
             cubes.Add(nextCube);
             initialColors.Add(colour);
     }
+
     void SpawnCubes(int n)
     {
-        
-
         for (int i = 0; i < n; i++)
         {
             SpawnCube(i);
         }
-        listCount = cubes.Count;
-        
+        listCount = cubes.Count;    
     }
-
-
 
     Color GetRandomGrayscaleColor()
     {
@@ -78,6 +76,7 @@ public class CubesHandler : MonoBehaviour
         return col.grayscale;
     }
 
+    //choose sort algorithm
     public void Sort()
     {
         switch(dropdown.value)
@@ -95,9 +94,7 @@ public class CubesHandler : MonoBehaviour
         }
     }
 
-
     //SORTING ALGORITHMS
-
     void Swap(int a, int b)
     {
         GameObject temp = cubes[b];
@@ -110,10 +107,10 @@ public class CubesHandler : MonoBehaviour
         return GetGrayscaleValue(a) > GetGrayscaleValue(b);
     }
 
-    
     IEnumerator BubbleSort()
     {
         OnSortToggle();
+
         for (int j = 0; j <= listCount - 2; j++)
         {
             for (int i = 0; i <= listCount - 2; i++)
@@ -123,12 +120,10 @@ public class CubesHandler : MonoBehaviour
                     Swap(i, i+1);
                     yield return StartSwap(i, i+1);
                 }
-
             }
         }
         yield return new WaitForSeconds(1);
         OnSortToggle();
-        yield return null;
     }
 
     IEnumerator OptimisedGnomeSort()
@@ -139,18 +134,19 @@ public class CubesHandler : MonoBehaviour
         {
             yield return GnomeSort(i);
         }
-
+        yield return new WaitForSeconds(1);
         OnSortToggle();
     }
+    
     IEnumerator GnomeSort(int upperBound)
     {
         int pos = upperBound;
 
         while (pos > 0 && IsBrighter(cubes[pos - 1], cubes[pos]))
         {
-                Swap(pos, pos - 1);
-                yield return StartSwap(pos, pos - 1);
-                pos--;
+            Swap(pos, pos - 1);
+            yield return StartSwap(pos, pos - 1);
+            pos--;
         }
     }
 
@@ -190,8 +186,6 @@ public class CubesHandler : MonoBehaviour
                     swapped = true;
                 }
             }
-
-            
         }
         yield return new WaitForSeconds(1);
         OnSortToggle();
@@ -214,11 +208,6 @@ public class CubesHandler : MonoBehaviour
         sortIsRunning = true;
     }
 
-    void OnDisable()
-    {
-        UFO.OnSwapIsOver -= SortIsRunning;
-    }
-
     public void Shuffle()
     {
         foreach (var cube in cubes)
@@ -235,6 +224,8 @@ public class CubesHandler : MonoBehaviour
         }
     }
 
-
-
+    void OnDisable()
+    {
+        UFO.OnSwapIsOver -= SortIsRunning;
+    }
 }

@@ -7,16 +7,11 @@ public class Audio : MonoBehaviour
     [SerializeField]
     private AudioClip blip;
 
-    private AudioSource source;
+    private AudioSource source {get {return GetComponent<AudioSource>();}}
 
     void OnEnable()
     {
         UFO.OnObjectMove += PlayBlip;
-    }
-    
-    void Awake()
-    {
-        source = this.GetComponent<AudioSource>();
     }
 
     void PlayBlip()
@@ -28,6 +23,4 @@ public class Audio : MonoBehaviour
     {
         UFO.OnObjectMove -= PlayBlip;
     }
-
-
 }

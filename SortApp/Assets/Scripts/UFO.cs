@@ -8,7 +8,7 @@ public class UFO : MonoBehaviour
     [SerializeField]
     private float standardAltitude = 5.0f;
     [SerializeField]
-    private float speed = 1f;
+    private float speed = 0.2f;
     [SerializeField]
     private GameObject tractorBeam;
 
@@ -113,9 +113,7 @@ public class UFO : MonoBehaviour
     IEnumerator Drop()
     {
         Transform child = GetChildrenByLayer(3);
-
         Vector3 dropPosition = new Vector3 (child.position.x, 0.5f, child.position.z);
-
 
         child.parent = null;
         
@@ -148,7 +146,4 @@ public class UFO : MonoBehaviour
     {
         CubesHandler.OnSwap -= Swap;
     }
-
-
-
 }
