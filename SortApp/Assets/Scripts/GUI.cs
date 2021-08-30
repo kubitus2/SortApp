@@ -16,6 +16,13 @@ public class GUI : MonoBehaviour
     [SerializeField]
     private GameObject modalPanel;
 
+    [SerializeField]
+    private Text timer;
+
+    int numOfSteps;
+    float timeElapsed;
+    bool isTimerRunning;
+
 
     private bool UIActive;
 
@@ -24,9 +31,12 @@ public class GUI : MonoBehaviour
         CubesHandler.OnSortToggle += StateToggle;
     }
 
-    void Start()
+    void Awake()
     {
         UIActive = true;
+        numOfSteps = 0;
+        timeElapsed = 0f;
+        isTimerRunning = false;
     }
 
     void StateToggle()
@@ -61,7 +71,29 @@ public class GUI : MonoBehaviour
         Application.Quit();
     }
 
+    void Update()
+    {
+        isTimerRunning = !UIActive;
 
+        if(isTimerRunning)
+        {
+            timeElapsed += Time.deltaTime;
+            DisplayTime(timeElapsed);
+        }
+        else
+        {
+            timeElapsed = 0f;
+            //DisplayTime(timeElapsed);
+        }
+    }
 
+    void DisplayTime(float time)
+    {
+        float minutes = Mathf.FloorToInt(time / 60);
+        float seconds = Mathf.FloorToInt(time % 60);
+        float miliSeconds = (time % 1) * 1000;
+
+        timer.text = string.Format("Time elapsed: {0:00}:{1:00}.{2:000}", minutes, seconds,miliSeconds);
+    }
 
 }
