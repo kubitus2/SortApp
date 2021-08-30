@@ -122,5 +122,4 @@ public class GUI : MonoBehaviour
         CubesHandler.OnSortToggle -= StateToggle;
         UFO.OnSwapIsOver -= CountSteps;
     }
-
 }
