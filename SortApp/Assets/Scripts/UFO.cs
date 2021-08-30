@@ -15,6 +15,9 @@ public class UFO : MonoBehaviour
     public delegate void SwapIsOver();
     public static event SwapIsOver OnSwapIsOver;
 
+    public delegate void MovingObject();
+    public static event MovingObject OnObjectMove;
+
     enum FloatMode
     {
         Directly,
@@ -103,7 +106,7 @@ public class UFO : MonoBehaviour
                 cargo.transform.parent = gameObject.transform;
             }
         }
-        
+        OnObjectMove();
         yield return null;
     }
 
@@ -117,6 +120,7 @@ public class UFO : MonoBehaviour
         child.parent = null;
         
         yield return MoveObject(child.transform, dropPosition);
+        OnObjectMove();
         tractorBeam.SetActive(false);
         yield return null;
     }

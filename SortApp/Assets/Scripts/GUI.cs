@@ -24,6 +24,8 @@ public class GUI : MonoBehaviour
     private bool isTimerRunning;
     private bool UIActive;
 
+    private AudioSource[] audios;
+
 
     void OnEnable()
     {
@@ -37,6 +39,8 @@ public class GUI : MonoBehaviour
         numOfSteps = 0;
         timeElapsed = 0f;
         isTimerRunning = false;
+
+        audios = FindObjectsOfType<AudioSource>();
     }
 
     void StateToggle()
@@ -53,12 +57,22 @@ public class GUI : MonoBehaviour
     {
         Time.timeScale = 0;
         modalPanel.transform.DOScaleX(0.3f, 0.1f).SetUpdate(true);
+
+        foreach(AudioSource audio in audios)
+        {
+            audio.Pause();
+        }
     }
 
     public void CloseQuitPrompt()
     {
         Time.timeScale = 1;
         modalPanel.transform.DOScaleX(0f, 0.2f).SetUpdate(true);  
+
+        foreach(AudioSource audio in audios)
+        {
+            audio.Play();
+        }
     } 
 
     public void Quit()
