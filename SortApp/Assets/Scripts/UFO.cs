@@ -13,8 +13,6 @@ public class UFO : MonoBehaviour
     public delegate void SwapIsOver();
     public static event SwapIsOver OnSwapIsOver;
 
-
-
     enum FloatMode
     {
         Directly,
@@ -23,7 +21,7 @@ public class UFO : MonoBehaviour
     };
     void OnEnable()
     {
-        CubesHandler.OnSwap += EventTest;
+        CubesHandler.OnSwap += Swap;
     }
     void Start()
     {
@@ -139,14 +137,14 @@ public class UFO : MonoBehaviour
         return null;  
     }
 
-    void EventTest(GameObject a, GameObject b)
+    void Swap(GameObject a, GameObject b)
     {
         StartCoroutine(SwapAnimation(a, b));
     }
 
     void OnDisable()
     {
-        CubesHandler.OnSwap -= EventTest;
+        CubesHandler.OnSwap -= Swap;
     }
 
 

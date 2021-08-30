@@ -19,6 +19,9 @@ public class GUI : MonoBehaviour
     [SerializeField]
     private Text timer;
 
+    [SerializeField]
+    private Text stepCounter;
+
     int numOfSteps;
     float timeElapsed;
     bool isTimerRunning;
@@ -26,9 +29,11 @@ public class GUI : MonoBehaviour
 
     private bool UIActive;
 
+
     void OnEnable()
     {
         CubesHandler.OnSortToggle += StateToggle;
+        UFO.OnSwapIsOver += CountSteps;
     }
 
     void Awake()
@@ -47,11 +52,6 @@ public class GUI : MonoBehaviour
         {
             btn.interactable = UIActive;
         }
-    }
-
-    void OnDisable()
-    {
-        CubesHandler.OnSortToggle -= StateToggle;
     }
 
     public void QuitPrompt()
@@ -79,10 +79,12 @@ public class GUI : MonoBehaviour
         {
             timeElapsed += Time.deltaTime;
             DisplayTime(timeElapsed);
+            DisplaySteps(numOfSteps);
         }
         else
         {
             timeElapsed = 0f;
+            numOfSteps = 0;
             //DisplayTime(timeElapsed);
         }
     }
@@ -94,6 +96,22 @@ public class GUI : MonoBehaviour
         float miliSeconds = (time % 1) * 1000;
 
         timer.text = string.Format("Time elapsed: {0:00}:{1:00}.{2:000}", minutes, seconds,miliSeconds);
+    }
+
+    void DisplaySteps(int steps)
+    {
+        stepCounter.text = string.Format("Steps done: {0}", steps);
+    }
+
+    void CountSteps()
+    {
+        numOfSteps++;
+    }
+
+    void OnDisable()
+    {
+        CubesHandler.OnSortToggle -= StateToggle;
+        UFO.OnSwapIsOver -= CountSteps;
     }
 
 }
