@@ -124,6 +124,7 @@ public class CubesHandler : MonoBehaviour
 
             }
         }
+        yield return new WaitForSeconds(1);
         OnSortToggle();
         yield return null;
     }
@@ -143,6 +144,7 @@ public class CubesHandler : MonoBehaviour
                 j--;
             }
         }
+        yield return new WaitForSeconds(1);
         OnSortToggle();
     }
 
@@ -183,9 +185,9 @@ public class CubesHandler : MonoBehaviour
                 }
             }
 
-            start++;
+            
         }
-
+        yield return new WaitForSeconds(1);
         OnSortToggle();
     }
 
