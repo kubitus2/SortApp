@@ -8,6 +8,9 @@ public class CubesHandler : MonoBehaviour
     public delegate void SwapAction(GameObject a, GameObject b);
     public static event SwapAction OnSwap;
 
+    public delegate void SortToggle();
+    public static event SortToggle OnSortToggle;
+
     [SerializeField]
     [Range(5,20)]
     private int numOfCubes = 10;
@@ -108,6 +111,7 @@ public class CubesHandler : MonoBehaviour
     
     IEnumerator BubbleSort()
     {
+        OnSortToggle();
         for (int j = 0; j <= listCount - 2; j++)
         {
             for (int i = 0; i <= listCount - 2; i++)
@@ -120,11 +124,13 @@ public class CubesHandler : MonoBehaviour
 
             }
         }
+        OnSortToggle();
         yield return null;
     }
 
     IEnumerator InsertionSort()
     {
+        OnSortToggle();
         for(int i = 1; i < listCount; i++)
         {
             int j = i;
@@ -137,10 +143,13 @@ public class CubesHandler : MonoBehaviour
                 j--;
             }
         }
+        OnSortToggle();
     }
 
     IEnumerator CocktailSort()
     {
+        OnSortToggle();
+
         bool swapped = true;
         int start = 0;
         int end = listCount;
@@ -176,6 +185,8 @@ public class CubesHandler : MonoBehaviour
 
             start++;
         }
+
+        OnSortToggle();
     }
 
     IEnumerator StartSwap(int a, int b)
@@ -192,7 +203,6 @@ public class CubesHandler : MonoBehaviour
 
     void SortIsRunning()
     {
-        Debug.Log("Sort is over");
         sortIsRunning = true;
     }
 
