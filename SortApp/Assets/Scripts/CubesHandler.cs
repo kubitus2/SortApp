@@ -224,14 +224,6 @@ public class CubesHandler : MonoBehaviour
         }
     }
 
-    public void Revert()
-    {
-        for(int i=0; i < listCount; i++)
-        {
-            cubes[i].GetComponent<Renderer>().material.color = initialColors[i];
-        }
-    }
-
     void OnDisable()
     {
         UFO.OnSwapIsOver -= SortIsRunning;
