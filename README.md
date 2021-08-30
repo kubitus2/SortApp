@@ -59,6 +59,7 @@ while(swapped)
 The Gnome Sort is named after a garden gnome sorting his flower pots. 
   * He looks at the flower pot next to him and the previous one; if they are in the right order he steps one pot forward, otherwise he swaps them and steps one pot backwards.
   * If there is no previous pot (he is at the starting of the pot line), he steps forwards; if there is no pot next to him (he is at the end of the pot line), he is done.
+
 In this app I have used it's optimised version as outlined below:
 ```C#
 void OptimisedGnomeSort()
@@ -80,3 +81,17 @@ void GnomeSort(int upperBound)
     }
 }
 ```
+
+## Technical details
+Detail | Value
+------------ | -------------
+Unity version  | 2020.3.0f1 Personal
+Render Pipeline | URP
+Time | August 2021
+
+## External assets used
+I have used the following free assets:
+  * [Flying saucer model](https://www.cgtrader.com/free-3d-models/space/spaceship/free-flying-saucer) by jonlundy3d
+  * [Sand texture](https://3dtextures.me/2017/03/23/sand-002/)
+
+I have also used fantastic [DOTween library] (http://dotween.demigiant.com/) for my animations.
