@@ -90,7 +90,7 @@ public class CubesHandler : MonoBehaviour
                 StartCoroutine(CocktailSort());
                 break;
             case 2:
-                StartCoroutine(GnomeSort());
+                StartCoroutine(OptimisedGnomeSort());
                 break;
         }
     }
@@ -131,46 +131,27 @@ public class CubesHandler : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator GnomeSort()
+    IEnumerator OptimisedGnomeSort()
     {
         OnSortToggle();
 
-        int pos = 0;
-
-        while (pos < listCount)
+        for(int i = 0; i < listCount; i++)
         {
-            if(pos == 0 || IsBrighter(cubes[pos], cubes[pos -1]))
-            {
-                pos++;
-            }
-            else
-            {
-                Swap(pos, pos - 1);
-                yield return StartSwap(pos, pos - 1);
-                pos--;
-            }
+            yield return GnomeSort(i);
         }
-
 
         OnSortToggle();
     }
-    IEnumerator InsertionSort()
+    IEnumerator GnomeSort(int upperBound)
     {
-        OnSortToggle();
-        for(int i = 1; i < listCount; i++)
+        int pos = upperBound;
+
+        while (pos > 0 && IsBrighter(cubes[pos - 1], cubes[pos]))
         {
-            int j = i;
-
-            while(j > 0 && IsBrighter(cubes[j-1], cubes[j]))
-            {
-                Swap(j, j-1);
-                yield return StartSwap(j, j - 1);
-
-                j--;
-            }
+                Swap(pos, pos - 1);
+                yield return StartSwap(pos, pos - 1);
+                pos--;
         }
-        yield return new WaitForSeconds(1);
-        OnSortToggle();
     }
 
     IEnumerator CocktailSort()

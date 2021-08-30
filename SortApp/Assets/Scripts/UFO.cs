@@ -9,6 +9,8 @@ public class UFO : MonoBehaviour
     private float standardAltitude = 5.0f;
     [SerializeField]
     private float speed = 1f;
+    [SerializeField]
+    private GameObject tractorBeam;
 
     public delegate void SwapIsOver();
     public static event SwapIsOver OnSwapIsOver;
@@ -22,10 +24,6 @@ public class UFO : MonoBehaviour
     void OnEnable()
     {
         CubesHandler.OnSwap += Swap;
-    }
-    void Start()
-    {
-        StartCoroutine(MoveAbove(new Vector3(3f,0f,0f), FloatMode.Directly));
     }
     
     IEnumerator SwapAnimation(GameObject a, GameObject b)
@@ -90,7 +88,7 @@ public class UFO : MonoBehaviour
     
     IEnumerator Lift()
     {
-
+        tractorBeam.SetActive(true);
         Vector3 cargoPos = new Vector3 (transform.position.x, transform.position.y - 1.0f, transform.position.z);
         RaycastHit hit;
         Ray ray = new Ray(transform.position, Vector3.down);
@@ -119,7 +117,7 @@ public class UFO : MonoBehaviour
         child.parent = null;
         
         yield return MoveObject(child.transform, dropPosition);
-
+        tractorBeam.SetActive(false);
         yield return null;
     }
 
