@@ -1,4 +1,7 @@
 # Fifty Shades of Cubes :smiley:
+![UI Screen](ufo_screen.png)
+Format: ![Alt Text](url)
+
 This simple 'game' shows visualisation of three sorting algorithms. A flying saucer hovering over the surface of Mars has one simple task: sort cubes by their shades, from the darkest to the brightest. The algorithms in questions are:
   * Bubble Sort
   * Cocktail Sort
