@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class GUI : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class GUI : MonoBehaviour
     [SerializeField]
     private List<Button> buttonlist = new List<Button>();
 
+    [SerializeField]
+    private GameObject modalPanel;
+
 
     private bool UIActive;
 
@@ -20,7 +24,7 @@ public class GUI : MonoBehaviour
         CubesHandler.OnSortToggle += StateToggle;
     }
 
-    void Awake()
+    void Start()
     {
         UIActive = true;
     }
@@ -33,11 +37,31 @@ public class GUI : MonoBehaviour
         {
             btn.interactable = UIActive;
         }
-        
     }
 
     void OnDisable()
     {
         CubesHandler.OnSortToggle -= StateToggle;
     }
+
+    public void QuitPrompt()
+    {
+        modalPanel.SetActive(true);
+        modalPanel.transform.DOScaleX(0.3f, 0.1f);
+    }
+
+    public void ClosePrompt()
+    {
+        modalPanel.transform.DOScaleX(0f, 0.2f);
+        modalPanel.SetActive(false);
+    } 
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+
+
+
 }
