@@ -111,35 +111,19 @@ public class UFO : MonoBehaviour
             }
         }
         AudioManager.PlaySound(AudioManager.Sound.LiftSound);
-        yield return null;
     }
 
     IEnumerator Drop()
     {
-        Transform child = GetChildrenByLayer(3);
+        Transform child = Utils.GetChildrenByLayer(gameObject.transform, 3);
         Vector3 dropPosition = new Vector3 (child.position.x, 0.5f, child.position.z);
 
         child.parent = null;
         
         yield return MoveObject(child.transform, dropPosition);
+
         tractorBeam.SetActive(false);
         AudioManager.PlaySound(AudioManager.Sound.LiftSound);
-
-        yield return null;
-    }
-
-    Transform GetChildrenByLayer(int layerID)
-    {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            Transform child = transform.GetChild(i);
-
-            if(child.gameObject.layer == layerID)
-            {
-                return child;
-            }
-        }
-        return null;  
     }
 
     void Swap(GameObject a, GameObject b)

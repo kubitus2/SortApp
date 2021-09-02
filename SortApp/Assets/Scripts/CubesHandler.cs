@@ -34,20 +34,16 @@ public class CubesHandler : MonoBehaviour
         swapIsNotRunning = true;
     }
 
-    Vector3 CubePositionOffset(int index)
-    {
-        return new Vector3 (1.5f * (index - numOfCubes / 2), 0f, 0f);
-    }
-
     void SpawnCube(int index)
     {
         Color colour = new Color(0f,0f,0f,1f);
 
         Vector3 pos = Vector3.zero;
-        pos = this.transform.position + CubePositionOffset(index);
+        pos = this.transform.position + Utils.CubePositionOffset(index, numOfCubes);
+
         GameObject nextCube = Instantiate(prefab, pos, Quaternion.identity);
 
-        colour = GetRandomGrayscaleColor();
+        colour = Utils.GetRandomGrayscaleColor();
         nextCube.GetComponent<Renderer>().material.color = colour;
         nextCube.gameObject.layer = 3;
 
@@ -62,21 +58,6 @@ public class CubesHandler : MonoBehaviour
         }
 
         listCount = cubes.Count;    
-    }
-
-    Color GetRandomGrayscaleColor()
-    {
-        Color colour = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-        float value = colour.grayscale;
-
-        return new Color(value, value, value, 1.0f);
-    }
-
-    float GetGrayscaleValue(GameObject obj)
-    {
-        Color col = obj.GetComponent<Renderer>().material.color;
-
-        return col.grayscale;
     }
 
     //choose sort algorithm
@@ -98,18 +79,6 @@ public class CubesHandler : MonoBehaviour
     }
 
     //SORTING ALGORITHMS
-    void Swap(int a, int b)
-    {
-        GameObject temp = cubes[b];
-        cubes[b] = cubes[a];
-        cubes[a] = temp;
-    }
-
-    bool IsBrighter(GameObject a, GameObject b)
-    {
-        return GetGrayscaleValue(a) > GetGrayscaleValue(b);
-    }
-
     IEnumerator BubbleSort()
     {
         OnSortToggle();
@@ -118,10 +87,10 @@ public class CubesHandler : MonoBehaviour
         {
             for (int i = 0; i <= listCount - 2; i++)
             {
-                if(IsBrighter(cubes[i], cubes[i+1]))
+                if(Utils.IsBrighter(cubes[i], cubes[i+1]))
                 {
                     yield return StartSwap(i, i+1);
-                    Swap(i, i+1);
+                    Utils.Swap(i, i+1, cubes);
                 }
             }
         }
@@ -145,11 +114,11 @@ public class CubesHandler : MonoBehaviour
     {
         int pos = upperBound;
 
-        while (pos > 0 && IsBrighter(cubes[pos - 1], cubes[pos]))
+        while (pos > 0 && Utils.IsBrighter(cubes[pos - 1], cubes[pos]))
         {
             
             yield return StartSwap(pos, pos - 1);
-            Swap(pos, pos - 1);
+            Utils.Swap(pos, pos - 1, cubes);
             pos--;
         }
     }
@@ -168,11 +137,11 @@ public class CubesHandler : MonoBehaviour
 
             for(int i = start; i < end - 1; ++i)
             {
-                if(IsBrighter(cubes[i], cubes[i+1]))
+                if(Utils.IsBrighter(cubes[i], cubes[i+1]))
                 {
                     
                     yield return StartSwap(i, i+1);
-                    Swap(i, i+1);
+                    Utils.Swap(i, i+1, cubes);
                     swapped = true;
                 }
             }
@@ -184,10 +153,10 @@ public class CubesHandler : MonoBehaviour
 
             for (int i = end - 1; i >= start; i--)
             {
-                if(IsBrighter(cubes[i], cubes[i+1]))
+                if(Utils.IsBrighter(cubes[i], cubes[i+1]))
                 {
                     yield return StartSwap(i, i+1);
-                    Swap(i, i+1);
+                    Utils.Swap(i, i+1, cubes);
                     swapped = true;
                 }
             }
@@ -217,7 +186,7 @@ public class CubesHandler : MonoBehaviour
     {
         foreach (var cube in cubes)
         {
-            cube.GetComponent<Renderer>().material.color = GetRandomGrayscaleColor();
+            cube.GetComponent<Renderer>().material.color = Utils.GetRandomGrayscaleColor();
         }
     }
 

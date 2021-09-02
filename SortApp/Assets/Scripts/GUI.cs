@@ -124,7 +124,6 @@ public class GUI : MonoBehaviour
         {
             timeElapsed = 0f;
             numOfSteps = 0;
-            //DisplayTime(timeElapsed);
         }
     }
 
