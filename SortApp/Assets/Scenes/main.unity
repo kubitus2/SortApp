@@ -383,6 +383,7 @@ MonoBehaviour:
   timer: {fileID: 496352492}
   stepCounter: {fileID: 182152814}
   animDuration: 0.1
+  am: {fileID: 24100000, guid: 68f8297434211e547bae5bb99fbe7da1, type: 2}
 --- !u!1 &53545661
 GameObject:
   m_ObjectHideFlags: 0
