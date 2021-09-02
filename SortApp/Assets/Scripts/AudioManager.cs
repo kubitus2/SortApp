@@ -8,6 +8,7 @@ public static class AudioManager
 {
     private static GameObject oneShotGameObject;
     private static AudioSource oneShotAudioSource;
+    private static AudioMixer audioMixer;
 
     public enum Sound
     {
@@ -57,4 +58,5 @@ public static class AudioManager
 
         return audioMixerGroup;
     }
+
 }

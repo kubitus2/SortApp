@@ -20,7 +20,7 @@ public class UFO : MonoBehaviour
         Directly,
         Infront,
         Behind
-    };
+    }
 
     void OnEnable()
     {

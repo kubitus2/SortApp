@@ -18,6 +18,7 @@ public class SoundAssets : MonoBehaviour
         }
     }
 
+    public GameObject ufo;
     public SoundAudioClip[] soundAudioClipArray;
 
     [System.Serializable]

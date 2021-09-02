@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 using DG.Tweening;
 
 public class GUI : MonoBehaviour
@@ -19,12 +20,17 @@ public class GUI : MonoBehaviour
     private Text stepCounter;
     [SerializeField]
     private float animDuration = 0.1f;
+    [SerializeField]
+    private AudioMixer am;
 
     private int numOfSteps;
     private float timeElapsed;
 
     private bool isTimerRunning;
     private bool isUIActive;
+
+    private bool isMuted;
+    private float currentVolume;
 
     private Button[] buttons;
 
@@ -36,10 +42,14 @@ public class GUI : MonoBehaviour
 
     void Awake()
     {
-        isUIActive = true;
         numOfSteps = 0;
         timeElapsed = 0f;
+
         isTimerRunning = false;
+        isUIActive = true;
+        
+        isMuted = false;
+        am.GetFloat("MasterVol", out currentVolume);
 
         buttons = FindObjectsOfType<Button>();
         AssignSoundToButtons(buttons);
@@ -67,14 +77,33 @@ public class GUI : MonoBehaviour
     {
         Time.timeScale = 0;
         modalPanel.transform.DOScaleX(0.3f, animDuration).SetUpdate(true);
-
+        ToggleMute();
     }
 
     public void CloseQuitPrompt()
     {
         Time.timeScale = 1;
-        modalPanel.transform.DOScaleX(0f, animDuration).SetUpdate(true);  
+        modalPanel.transform.DOScaleX(0f, animDuration).SetUpdate(true); 
+        ToggleMute(); 
     } 
+
+    public void ToggleMute()
+    {
+        float volume = 0f;
+
+        isMuted = !isMuted;
+
+        if(isMuted)
+        {
+            volume = -80.0f;
+        } 
+        else
+        {
+            volume = currentVolume;
+        }
+
+        am.SetFloat("MasterVol", volume);
+    }
 
     public void Quit()
     {
