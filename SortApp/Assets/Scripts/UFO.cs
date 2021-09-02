@@ -113,7 +113,7 @@ public class UFO : MonoBehaviour
                 cargo.transform.parent = gameObject.transform;
             }
         }
-        OnObjectMove();
+        AudioManager.PlaySound(AudioManager.Sound.LiftSound);
         yield return null;
     }
 
@@ -125,8 +125,9 @@ public class UFO : MonoBehaviour
         child.parent = null;
         
         yield return MoveObject(child.transform, dropPosition);
-        OnObjectMove();
         tractorBeam.SetActive(false);
+        AudioManager.PlaySound(AudioManager.Sound.LiftSound);
+
         yield return null;
     }
 
