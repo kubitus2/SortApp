@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class GUI : MonoBehaviour
-{
+{ 
 
     [SerializeField]
     Canvas canvas;
@@ -26,7 +26,7 @@ public class GUI : MonoBehaviour
     private bool isTimerRunning;
     private bool isUIActive;
 
-    private AudioSource[] audios;
+    private Button[] buttons;
 
     void OnEnable()
     {
@@ -41,7 +41,16 @@ public class GUI : MonoBehaviour
         timeElapsed = 0f;
         isTimerRunning = false;
 
-        audios = FindObjectsOfType<AudioSource>();
+        buttons = FindObjectsOfType<Button>();
+        AssignSoundToButtons(buttons);
+    }
+
+    void AssignSoundToButtons(Button[] btns)
+    {
+        foreach (var btn in btns)
+        {
+            btn.onClick.AddListener(() => AudioManager.PlaySound(AudioManager.Sound.ClickSound));
+        }
     }
 
     void StateToggle()
@@ -59,21 +68,12 @@ public class GUI : MonoBehaviour
         Time.timeScale = 0;
         modalPanel.transform.DOScaleX(0.3f, animDuration).SetUpdate(true);
 
-        foreach(AudioSource audio in audios)
-        {
-            audio.Pause();
-        }
     }
 
     public void CloseQuitPrompt()
     {
         Time.timeScale = 1;
         modalPanel.transform.DOScaleX(0f, animDuration).SetUpdate(true);  
-
-        foreach(AudioSource audio in audios)
-        {
-            audio.Play();
-        }
     } 
 
     public void Quit()

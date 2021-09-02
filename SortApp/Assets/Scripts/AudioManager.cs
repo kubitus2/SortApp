@@ -8,14 +8,13 @@ public static class AudioManager
 {
     private static GameObject oneShotGameObject;
     private static AudioSource oneShotAudioSource;
-    private static List<Button> btns = new List<Button>();
 
     public enum Sound
     {
         LiftSound,
         ClickSound
     }
-    
+
     public static void PlaySound(Sound sound)
     {
         if(oneShotGameObject == null)
