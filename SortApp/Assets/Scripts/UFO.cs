@@ -15,9 +15,6 @@ public class UFO : MonoBehaviour
     public delegate void SwapIsOver();
     public static event SwapIsOver OnSwapIsOver;
 
-    public delegate void MovingObject();
-    public static event MovingObject OnObjectMove;
-
     enum FloatMode
     {
         Directly,
