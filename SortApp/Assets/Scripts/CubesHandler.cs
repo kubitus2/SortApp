@@ -15,6 +15,8 @@ public class CubesHandler : MonoBehaviour
     [Range(5,20)]
     private int numOfCubes = 12;
     [SerializeField]
+    private Material cubeMat;
+    [SerializeField]
     private Dropdown dropdown;
 
     bool swapIsNotRunning;
@@ -45,6 +47,7 @@ public class CubesHandler : MonoBehaviour
 
         //paint the cube
         colour = Utils.GetRandomGrayscaleColor();
+        nextCube.GetComponent<Renderer>().material = cubeMat;
         nextCube.GetComponent<Renderer>().material.color = colour;
 
         //assign layer

@@ -373,7 +373,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1194704c5ded7ab4e8384af25749b12e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 33676326}
   modalPanel: {fileID: 68788300}
   controlPanel: {fileID: 2117269759}
   UIPanel: {fileID: 1557357031}
@@ -2157,6 +2156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numOfCubes: 12
+  cubeMat: {fileID: 2100000, guid: da9afae9f435ef44f822ac6cfbc300fb, type: 2}
   dropdown: {fileID: 737005605}
 --- !u!1 &1193076486
 GameObject:
