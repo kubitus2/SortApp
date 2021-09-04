@@ -9,24 +9,35 @@ public class GUI : MonoBehaviour
 { 
 
     [SerializeField]
-    Canvas canvas;
+    private Canvas canvas;
     [SerializeField]
-    private List<Button> buttonlist = new List<Button>();
+    private GameObject modalPanel; //exit prompt
     [SerializeField]
-    private GameObject modalPanel;
+    private Canvas controlPanel; //simulation controls
+    [SerializeField]
+    private Canvas UIPanel; //all UI except modal panel
+
     [SerializeField]
     private Text timer;
     [SerializeField]
     private Text stepCounter;
+
     [SerializeField]
-    private float animDuration = 0.1f;
+    private Text muteText;
+    [SerializeField]
+    private Button muteButton;
     [SerializeField]
     private AudioMixer am;
+    
+    [SerializeField]
+    [Range(0,1)]
+    private float animDuration = 0.1f; //modal panel fade animation duration (in seconds)
 
     private int numOfSteps;
     private float timeElapsed;
 
     private bool isTimerRunning;
+    private bool areSimControlsActive;
     private bool isUIActive;
 
     private bool isMuted;
@@ -36,7 +47,7 @@ public class GUI : MonoBehaviour
 
     void OnEnable()
     {
-        CubesHandler.OnSortToggle += StateToggle;
+        CubesHandler.OnSortToggle += ToggleControls;
         UFO.OnSwapIsOver += CountSteps;
     }
 
@@ -46,6 +57,7 @@ public class GUI : MonoBehaviour
         timeElapsed = 0f;
 
         isTimerRunning = false;
+        areSimControlsActive = true;
         isUIActive = true;
         
         isMuted = false;
@@ -63,14 +75,19 @@ public class GUI : MonoBehaviour
         }
     }
 
-    void StateToggle()
+    void ToggleControls()
+    {
+        areSimControlsActive = !areSimControlsActive;
+
+        controlPanel.GetComponent<CanvasGroup>().interactable = areSimControlsActive;
+    }
+
+    void UIToggle()
     {
         isUIActive = !isUIActive;
-
-        foreach(var btn in buttonlist)
-        {
-            btn.interactable = isUIActive;
-        }
+        
+        ToggleControls();
+        UIPanel.GetComponent<CanvasGroup>().interactable = isUIActive;
     }
 
     public void QuitPrompt()
@@ -78,6 +95,7 @@ public class GUI : MonoBehaviour
         Time.timeScale = 0;
         modalPanel.transform.DOScaleX(0.3f, animDuration).SetUpdate(true);
         ToggleMute();
+        UIToggle();
     }
 
     public void CloseQuitPrompt()
@@ -85,6 +103,7 @@ public class GUI : MonoBehaviour
         Time.timeScale = 1;
         modalPanel.transform.DOScaleX(0f, animDuration).SetUpdate(true); 
         ToggleMute(); 
+        UIToggle();
     } 
 
     public void ToggleMute()
@@ -96,10 +115,12 @@ public class GUI : MonoBehaviour
         if(isMuted)
         {
             volume = -80.0f;
+            muteText.text = "Unmute";
         } 
         else
         {
             volume = currentVolume;
+            muteText.text = "Mute";
         }
 
         am.SetFloat("MasterVol", volume);
@@ -112,7 +133,7 @@ public class GUI : MonoBehaviour
 
     void Update()
     {
-        isTimerRunning = !isUIActive;
+        isTimerRunning = !areSimControlsActive;
 
         if(isTimerRunning)
         {
@@ -146,9 +167,14 @@ public class GUI : MonoBehaviour
         numOfSteps++;
     }
 
+    void DisablecontrolPanel()
+    {
+        controlPanel.GetComponent<CanvasGroup>().interactable = false;
+    }
+
     void OnDisable()
     {
-        CubesHandler.OnSortToggle -= StateToggle;
+        CubesHandler.OnSortToggle -= ToggleControls;
         UFO.OnSwapIsOver -= CountSteps;
     }
 }
