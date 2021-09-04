@@ -15,8 +15,6 @@ public class CubesHandler : MonoBehaviour
     [Range(5,20)]
     private int numOfCubes = 12;
     [SerializeField]
-    private GameObject prefab;
-    [SerializeField]
     private Dropdown dropdown;
 
     bool swapIsNotRunning;
@@ -41,7 +39,6 @@ public class CubesHandler : MonoBehaviour
         Vector3 pos = Vector3.zero;
         pos = this.transform.position + Utils.CubePositionOffset(index, numOfCubes);
 
-        //GameObject nextCube = Instantiate(prefab, pos, Quaternion.identity);
         GameObject nextCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         nextCube.transform.position = pos;
 
@@ -62,7 +59,7 @@ public class CubesHandler : MonoBehaviour
         listCount = cubes.Count;    
     }
 
-    //choose sort algorithm
+    //choose sorting algorithm
     public void Sort()
     {
         switch(dropdown.value)
@@ -84,7 +81,6 @@ public class CubesHandler : MonoBehaviour
     IEnumerator BubbleSort()
     {
         OnSortToggle();
-
         for (int j = 0; j <= listCount - 2; j++)
         {
             for (int i = 0; i <= listCount - 2; i++)
@@ -103,7 +99,6 @@ public class CubesHandler : MonoBehaviour
     IEnumerator OptimisedGnomeSort()
     {
         OnSortToggle();
-
         for(int i = 0; i < listCount; i++)
         {
             yield return GnomeSort(i);
@@ -127,12 +122,11 @@ public class CubesHandler : MonoBehaviour
 
     IEnumerator CocktailSort()
     {
-        OnSortToggle();
-
         bool swapped = true;
         int start = 0;
         int end = listCount;
 
+        OnSortToggle();
         while(swapped)
         {
             swapped = false;
@@ -140,8 +134,7 @@ public class CubesHandler : MonoBehaviour
             for(int i = start; i < end - 1; ++i)
             {
                 if(Utils.IsBrighter(cubes[i], cubes[i+1]))
-                {
-                    
+                {   
                     yield return StartSwap(i, i+1);
                     Utils.Swap(i, i+1, cubes);
                     swapped = true;
@@ -173,6 +166,7 @@ public class CubesHandler : MonoBehaviour
         {
             yield return null;
         }
+
         swapIsNotRunning = false;
 
         OnSwap(cubes[a], cubes[b]);
@@ -184,7 +178,7 @@ public class CubesHandler : MonoBehaviour
         swapIsNotRunning = true;
     }
 
-    public void Shuffle()
+    public void Randomise()
     {
         foreach (var cube in cubes)
         {

@@ -7,9 +7,6 @@ using DG.Tweening;
 
 public class GUI : MonoBehaviour
 { 
-
-    [SerializeField]
-    private Canvas canvas;
     //exit prompt
     [SerializeField]
     private GameObject modalPanel; 
@@ -196,11 +193,6 @@ public class GUI : MonoBehaviour
     void CountSteps()
     {
         numOfSteps++;
-    }
-
-    void DisablecontrolPanel()
-    {
-        controlPanel.GetComponent<CanvasGroup>().interactable = false;
     }
 
     void OnDisable()

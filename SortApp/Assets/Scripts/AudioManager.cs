@@ -18,7 +18,7 @@ public static class AudioManager
     {
         if(oneShotGameObject == null)
         {
-            oneShotGameObject = new  GameObject("One shot sound");
+            oneShotGameObject = new GameObject("One shot sound");
             oneShotAudioSource = oneShotGameObject.AddComponent<AudioSource>();
         }
 
@@ -56,5 +56,4 @@ public static class AudioManager
 
         return audioMixerGroup;
     }
-
 }

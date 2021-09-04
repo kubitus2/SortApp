@@ -7,7 +7,7 @@ public class UFO : MonoBehaviour
     [SerializeField]
     private float standardAltitude = 5.0f;
     [SerializeField]
-    private float speed = 0.2f;
+    private float speed = 0.05f;
     [SerializeField]
     private GameObject tractorBeam;
 
@@ -28,11 +28,10 @@ public class UFO : MonoBehaviour
     
     IEnumerator SwapAnimation(GameObject a, GameObject b)
     {
-        
         Vector3 aPosition = a.transform.position;
         Vector3 bPosition = b.transform.position;
 
-        //move above and lift first cube
+        //move above and lift the first cube
         yield return MoveAbove (aPosition, FloatMode.Directly);
         yield return Lift();
 
