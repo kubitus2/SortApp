@@ -27,7 +27,7 @@ public class GUI : MonoBehaviour
     [SerializeField]
     private Button muteButton;
     [SerializeField]
-    private AudioMixer am;
+    private AudioMixer audioMixer;
     
     [SerializeField]
     [Range(0,1)]
@@ -61,7 +61,7 @@ public class GUI : MonoBehaviour
         isUIActive = true;
         
         isMuted = false;
-        am.GetFloat("MasterVol", out currentVolume);
+        audioMixer.GetFloat("MasterVol", out currentVolume);
 
         buttons = FindObjectsOfType<Button>();
         AssignSoundToButtons(buttons);
@@ -123,7 +123,7 @@ public class GUI : MonoBehaviour
             muteText.text = "Mute";
         }
 
-        am.SetFloat("MasterVol", volume);
+        audioMixer.SetFloat("MasterVol", volume);
     }
 
     public void Quit()

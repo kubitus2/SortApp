@@ -41,7 +41,9 @@ public class CubesHandler : MonoBehaviour
         Vector3 pos = Vector3.zero;
         pos = this.transform.position + Utils.CubePositionOffset(index, numOfCubes);
 
-        GameObject nextCube = Instantiate(prefab, pos, Quaternion.identity);
+        //GameObject nextCube = Instantiate(prefab, pos, Quaternion.identity);
+        GameObject nextCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        nextCube.transform.position = pos;
 
         colour = Utils.GetRandomGrayscaleColor();
         nextCube.GetComponent<Renderer>().material.color = colour;
