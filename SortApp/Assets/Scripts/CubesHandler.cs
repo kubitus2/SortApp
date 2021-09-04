@@ -35,17 +35,22 @@ public class CubesHandler : MonoBehaviour
     void SpawnCube(int index)
     {
         Color colour = new Color(0f,0f,0f,1f);
-
         Vector3 pos = Vector3.zero;
         pos = this.transform.position + Utils.CubePositionOffset(index, numOfCubes);
 
+        //create and place cube
         GameObject nextCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        nextCube.name = "Cube #" + (index + 1);
         nextCube.transform.position = pos;
 
+        //paint the cube
         colour = Utils.GetRandomGrayscaleColor();
         nextCube.GetComponent<Renderer>().material.color = colour;
+
+        //assign layer
         nextCube.gameObject.layer = 3;
 
+        //add the cube to the cube list
         cubes.Add(nextCube);
     }
 
