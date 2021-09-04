@@ -10,18 +10,23 @@ public class GUI : MonoBehaviour
 
     [SerializeField]
     private Canvas canvas;
+    //exit prompt
     [SerializeField]
-    private GameObject modalPanel; //exit prompt
+    private GameObject modalPanel; 
+    //simulation controls
     [SerializeField]
-    private Canvas controlPanel; //simulation controls
+    private Canvas controlPanel;
+    //all UI except exit prompt 
     [SerializeField]
-    private Canvas UIPanel; //all UI except modal panel
+    private Canvas UIPanel; 
 
+    //text displays
     [SerializeField]
     private Text timer;
     [SerializeField]
     private Text stepCounter;
 
+    //mute button elements
     [SerializeField]
     private Text muteText;
     [SerializeField]
@@ -29,20 +34,26 @@ public class GUI : MonoBehaviour
     [SerializeField]
     private AudioMixer audioMixer;
     
+    //modal panel fade animation speed
     [SerializeField]
     [Range(0,1)]
-    private float animDuration = 0.1f; //modal panel fade animation duration (in seconds)
+    private float animDuration = 0.1f; 
 
+    //counter vars
     private int numOfSteps;
     private float timeElapsed;
 
+    //UI active flags
     private bool isTimerRunning;
     private bool areSimControlsActive;
     private bool isUIActive;
 
+    //mute utility vars
     private bool isMuted;
+    private bool wasMuted;
     private float currentVolume;
 
+    //list of all buttons in the UI
     private Button[] buttons;
 
     void OnEnable()
@@ -61,6 +72,7 @@ public class GUI : MonoBehaviour
         isUIActive = true;
         
         isMuted = false;
+        wasMuted = false;
         audioMixer.GetFloat("MasterVol", out currentVolume);
 
         buttons = FindObjectsOfType<Button>();
@@ -92,17 +104,33 @@ public class GUI : MonoBehaviour
 
     public void QuitPrompt()
     {
-        Time.timeScale = 0;
+        Time.timeScale = 0f;
         modalPanel.transform.DOScaleX(0.3f, animDuration).SetUpdate(true);
-        ToggleMute();
+
+        if(!isMuted)
+        {
+            ToggleMute(); 
+        }
+        else
+        {
+            wasMuted = true;
+        }
+
         UIToggle();
     }
 
     public void CloseQuitPrompt()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
         modalPanel.transform.DOScaleX(0f, animDuration).SetUpdate(true); 
-        ToggleMute(); 
+
+        if(!wasMuted)
+        {
+            ToggleMute(); 
+        }
+
+        wasMuted = false;
+
         UIToggle();
     } 
 
@@ -131,6 +159,14 @@ public class GUI : MonoBehaviour
         Application.Quit();
     }
 
+    public void ResetCounters()
+    {
+        timeElapsed = 0f;
+        numOfSteps = 0;
+        DisplaySteps(numOfSteps);
+        DisplayTime(timeElapsed);
+    }
+
     void Update()
     {
         isTimerRunning = !areSimControlsActive;
@@ -140,11 +176,6 @@ public class GUI : MonoBehaviour
             timeElapsed += Time.deltaTime;
             DisplayTime(timeElapsed);
             DisplaySteps(numOfSteps);
-        }
-        else
-        {
-            timeElapsed = 0f;
-            numOfSteps = 0;
         }
     }
 
