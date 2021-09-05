@@ -1,5 +1,5 @@
 # Fifty Shades of Cubes
-![UI Screen](ufo_screen.png)
+![UI Screen](img/ufo_screen.png)
 ## Latest improvements
   * Recreated audio manager system
   * Fixed and updated UI
